@@ -3,7 +3,7 @@ library(lingtypology)
 df <- read_tsv("https://raw.githubusercontent.com/LingConLab/2018_fedorenko_ALS_Circassian_isoglosses/master/2018_field_data%20-%20elicitation.tsv")
 
 df %>% 
-  mutate(grammaticality = if_else(str_detect(sentence, "\\*"), "*", "+"),
+  mutate(grammaticality = if_else(stringr::str_detect(sentence, "\\*"), "*", "+"),
          en_village = case_when(
            village == "Адамий" ~ "Adamiy",
            village == "Гатлукай" ~ "Gatlukay",
