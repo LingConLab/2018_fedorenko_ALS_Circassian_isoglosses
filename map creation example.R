@@ -82,3 +82,27 @@ matrix_f %>%
   hc
 
 # it doesn't work because of a big amount of NA, but probably it will works, if you select some features
+
+# Here is a trick: I change NA to 0. It is bad solution, but we then achieve feature clusterisation
+
+df %>%
+  distinct() %>% 
+  mutate(grammaticality = if_else(grammaticality == "+", 1, 0)) %>% 
+  select(grammaticality, en_village, variable) %>% 
+  spread(en_village, grammaticality, fill = 0) %>% 
+  as.data.frame() ->
+  matrix_f
+
+rownames(matrix_f) <- matrix_f$variable
+matrix_f <- matrix_f[,-1]
+
+matrix_f %>% 
+  dist() %>% 
+  hclust() ->
+  hc
+
+library(ape)
+plot(as.phylo(hc), 
+     type = "fan",
+     cex = 0.6,
+     no.margin = TRUE)
